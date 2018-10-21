@@ -24,18 +24,23 @@ class VideoViewController: UIViewController, AVCaptureFileOutputRecordingDelegat
         if recordOutput.isRecording {
             recordOutput.stopRecording()
             saveRecording()
+            pushToMapView()
         } else {
             recordOutput.startRecording(to: newRecordingURL(), recordingDelegate: self)
         }
     }
     
     func saveRecording() {
-        
         let noImage = UIImage()
         let noRealImage = noImage.pngData()
         
         guard let audio = recordOutput.outputFileURL else { return }
         experienceController?.updateVideoURL(with: "", image: noRealImage, audio: audio)
+    }
+    
+    func pushToMapView() {
+        let vc = MapViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func fileOutput(_ output: AVCaptureFileOutput, didStartRecordingTo fileURL: URL, from connections: [AVCaptureConnection]) {
